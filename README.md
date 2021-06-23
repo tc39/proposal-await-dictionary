@@ -1,57 +1,142 @@
-# template-for-proposals
+# Promise.ownProperties(), Promise.fromEntries()
 
-A repository template for ECMAScript proposals.
+## Status
 
-## Before creating a proposal
+* Champion(s): TBD
+* Author(s): Alexander J. Vincent
+* Stage: 0
 
-Please ensure the following:
-  1. You have read the [process document](https://tc39.github.io/process-document/)
-  1. You have reviewed the [existing proposals](https://github.com/tc39/proposals/)
-  1. You are aware that your proposal requires being a member of TC39, or locating a TC39 delegate to "champion" your proposal
+## Motivation
 
-## Create your proposal repo
+Await keywords for properties on an object block execution:
 
-Follow these steps:
-  1.  Click the green ["use this template"](https://github.com/tc39/template-for-proposals/generate) button in the repo header. (Note: Do not fork this repo in GitHub's web interface, as that will later prevent transfer into the TC39 organization)
-  1.  Go to your repo settings “Options” page, under “GitHub Pages”, and set the source to the **main branch** under the root (and click Save, if it does not autosave this setting)
-      1. check "Enforce HTTPS"
-      1. On "Options", under "Features", Ensure "Issues" is checked, and disable "Wiki", and "Projects" (unless you intend to use Projects)
-      1. Under "Merge button", check "automatically delete head branches"
-<!--
-  1.  Avoid merge conflicts with build process output files by running:
-      ```sh
-      git config --local --add merge.output.driver true
-      git config --local --add merge.output.driver true
-      ```
-  1.  Add a post-rewrite git hook to auto-rebuild the output on every commit:
-      ```sh
-      cp hooks/post-rewrite .git/hooks/post-rewrite
-      chmod +x .git/hooks/post-rewrite
-      ```
--->
-  3.  ["How to write a good explainer"][explainer] explains how to make a good first impression.
+```javascript
+const obj = {
+  shape: await shape,
+  color: await color,
+  mass: await mass,
+}
+```
 
-      > Each TC39 proposal should have a `README.md` file which explains the purpose
-      > of the proposal and its shape at a high level.
-      >
-      > ...
-      >
-      > The rest of this page can be used as a template ...
+This is not how promises should be used:  we have to wait for the shape property, _then_ the color property, _then_ the mass property.  It would be better to have a `Promise.all()`-like static function, which we're calling `Promise.ownProperties()` as a parallel to `Object.getOwnPropertyNames()` or `Reflect.ownKeys()`, to construct an object with asynchronous properties.
 
-      Your explainer can point readers to the `index.html` generated from `spec.emu`
-      via markdown like
+While a workaround is admittedly somewhat easy to write, this pattern (link requested for BlueBird) appears [often](https://github.com/Agoric/agoric-sdk/blob/c254eb6950d99f28f410745aaaba5cda7f104af1/packages/same-structure/src/sameStructure.js#L104-L108) enough to potentially bring into the main language.  Plus, it is not a feature that developers new to promises would think of.
 
-      ```markdown
-      You can browse the [ecmarkup output](https://ACCOUNT.github.io/PROJECT/)
-      or browse the [source](https://github.com/ACCOUNT/PROJECT/blob/HEAD/spec.emu).
-      ```
+## Use cases
 
-      where *ACCOUNT* and *PROJECT* are the first two path elements in your project's Github URL.
-      For example, for github.com/**tc39**/**template-for-proposals**, *ACCOUNT* is "tc39"
-      and *PROJECT* is "template-for-proposals".
+One use case is above, for defining an object's properties asynchronously.  Specifying the prototype of such an object is an open question.  This could be in one of three forms:
+1. `Promise.ownProperties([prototype,] dictionary)` (similar to `Object.create()`)
+2. `Promise.ownProperties(dictionary, [prototype])` to place optional arguments at the end
+3. `Promise.ownProperties(dictionary)`, to create a vanilla object
 
+We've had no discussion on the API yet.
+
+Another is for _asynchronous Map objects_, where either the keys or the values may be promises.  This is the use case for implementing `Promise.fromEntries()`, similar to `Object.fromEntries()`.  In fact, the polyfill below uses this algorithm:
+
+1. Extract keys and values from an iterable using `Object.entries()`
+2. Await an array of `Promise.all([key, value])` tuples using `Promise.all()`
+3. Reconstruct the desired object using `Object.fromEntries()`
+
+Both methods would return a single Promise which resolves to an object.
+
+Details:
+* We are not proposing deep-copy support in these API's.
+* We are looking at "own enumerable properties", again similar to Object.entries().
+
+## Description
+
+Here's some example code of how we envision these two methods in use.
+
+```javascript
+const objectFixture = {
+  one: Promise.resolve(1),
+  two: Promise.resolve(2),
+  three: Promise.resolve(3)
+};
+
+const entriesFixture = [
+  [Promise.resolve("four"), Promise.resolve(4)],
+  [Promise.resolve("five"), Promise.resolve(5)],
+  [Promise.resolve("six"), Promise.resolve(6)],
+];
+
+const result = await Promise.ownProperties(objectFixture);
+console.log(JSON.stringify(result)); // results in '{ "one": 1, "two": 2, "three": 3 }'
+
+const result2 = await Promise.fromEntries(entriesFixture);
+console.log(JSON.stringify(result2)); // results in '{ "four": 4, "five": 5, "six": 6 }'
+```
+
+### Promise.ownProperties()
+
+* The dictionary argument is a normal object, with the caveat that its property values are a mix of promises and resolved values.
+* The method returns a Promise which resolves to an object with the same order of keys and all promises among the values resolved.
+
+### Promise.fromEntries()
+
+* The iterable argument is an iterable, wherein the values retrieved in a `for...of` loop are themselves a key-value tuple, and either member of the tuple may be a Promise.
+* The method returns a Promise which resolves to an object with the same order of keys and all promises among the values resolved.
+
+## Comparison
+
+TBD
+
+## Implementations
+
+### Polyfill/transpiler implementations
+This code is the minimalist polyfill Alex tested the above use case examples against.
+
+```javascript
+"use strict";
+
+/**
+ * @param {Iterable} iterable
+ * @returns {Promise<Object>}
+ */
+Promise.fromEntries = async function(iterable) {
+  if ((Object(iterable) !== iterable) || !(Symbol.iterator in iterable))
+    throw new TypeError("First argument must be an iterable object!");
+
+  const promiseArray = [];
+  for (const [keyPromise, valuePromise] of iterable) {
+    promiseArray.push(Promise.all([keyPromise, valuePromise]));
+  }
+
+  const entriesArray = await Promise.all(promiseArray);
+  return Object.fromEntries(entriesArray);
+};
+
+/**
+ * 
+ * @param {Object} obj
+ * @returns {Promise<Object>}
+ */
+Promise.ownProperties = function(obj) {
+  return Promise.fromEntries(Object.entries(obj));
+};
+```
+
+### Native implementations
+
+None.
+
+## Q&A
+
+**Q**: Why not WeakMaps, WeakSets or Sets?
+
+**A**: WeakMaps and WeakSets are by design not iterable.  Sets are iterable, but `Promise.all()` covers that case fairly well, we think.
+
+**Q**: Why not a deep-copy option?
+
+**A**: Deep copy traditionally has been left out of JavaScript for a number of reasons.  While a recursive promise walking API might be possible, combining it with this feels overcomplicated and unlikely to pass TC39's smell tests.
+
+**Q**: Why not all keys?
+
+**A**: This implies walking the prototype chain.  Note this proposal would have been `Promise.allProperties()` originally, but that naming confuses what the polyfill does above with that intended use case.  Plus, if a prototype has promises on it, then how would we safely construct the prototype of the resulting object?  Going down the prototype chain opens a can of worms.
 
 ## Maintain your proposal repo
+
+(For the future) 
 
   1. Make your changes to `spec.emu` (ecmarkup uses HTML syntax, but is not HTML, so I strongly suggest not naming it ".html")
   1. Any commit that makes meaningful changes to the spec, should run `npm run build` and commit the resulting output.
