@@ -134,6 +134,10 @@ None.
 
 **A**: This implies walking the prototype chain.  Note this proposal would have been `Promise.allProperties()` originally, but that naming confuses what the polyfill does above with that intended use case.  Plus, if a prototype has promises on it, then how would we safely construct the prototype of the resulting object?  Going down the prototype chain opens a can of worms.
 
+**Q**: What about symbol keys?
+
+**A**: We haven't really talked about them yet.  That said, `Object.entries()`, for better or for worse, only considers string keys.
+
 ## Maintain your proposal repo
 
 (For the future) 
