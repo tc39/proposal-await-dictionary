@@ -27,7 +27,7 @@ While a workaround is admittedly somewhat easy to write, this pattern (link requ
 One use case is above, for defining an object's properties asynchronously.  Specifying the prototype of such an object is an open question.  This could be in one of three forms:
 1. `Promise.ownProperties([prototype,] dictionary)` (similar to `Object.create()`)
 2. `Promise.ownProperties(dictionary, [prototype])` to place optional arguments at the end
-3. `Promise.ownProperties(dictionary)`, to create a vanilla object
+3. `Promise.ownProperties(dictionary)`, to create a vanilla object (preferred, see issue #3)
 
 We've had no discussion on the API yet.
 
