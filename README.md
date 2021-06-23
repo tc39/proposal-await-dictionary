@@ -2,7 +2,7 @@
 
 ## Status
 
-* Champion(s): TBD
+* Champion(s): Jordan Harband, Rick Waldron
 * Author(s): Alexander J. Vincent
 * Stage: 0
 
