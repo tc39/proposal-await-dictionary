@@ -1,4 +1,4 @@
-# Promise.ownProperties(), Promise.fromEntries()
+# Await dictionary of Promises
 
 ## Status
 
