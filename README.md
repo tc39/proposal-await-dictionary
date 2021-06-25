@@ -81,37 +81,8 @@ TBD
 ## Implementations
 
 ### Polyfill/transpiler implementations
-This code is the minimalist polyfill Alex tested the above use case examples against.
 
-```javascript
-"use strict";
-
-/**
- * @param {Iterable} iterable
- * @returns {Promise<Object>}
- */
-Promise.fromEntries = async function(iterable) {
-  if ((Object(iterable) !== iterable) || !(Symbol.iterator in iterable))
-    throw new TypeError("First argument must be an iterable object!");
-
-  const promiseArray = [];
-  for (const [keyPromise, valuePromise] of iterable) {
-    promiseArray.push(Promise.all([keyPromise, valuePromise]));
-  }
-
-  const entriesArray = await Promise.all(promiseArray);
-  return Object.fromEntries(entriesArray);
-};
-
-/**
- * 
- * @param {Object} obj
- * @returns {Promise<Object>}
- */
-Promise.ownProperties = function(obj) {
-  return Promise.fromEntries(Object.entries(obj));
-};
-```
+None.
 
 ### Native implementations
 
