@@ -28,7 +28,7 @@ One use case is above, for defining an object's properties asynchronously.
 
 We've had no discussion on the API yet.
 
-Another is for _asynchronous Map objects_, where either the keys or the values may be promises.  This is the use case for implementing `Promise.fromEntries()`, similar to `Object.fromEntries()`.  In fact, the polyfill below uses this algorithm:
+Another is for _asynchronous Map objects_, where either the keys or the values may be promises.  This is the use case for implementing `Promise.fromEntries()`, similar to `Object.fromEntries()`.  Here's one suggested algorithm:
 
 1. Extract keys and values from an iterable using `Object.entries()`
 2. Await an array of `Promise.all([key, value])` tuples using `Promise.all()`
