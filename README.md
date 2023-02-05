@@ -2,6 +2,8 @@
 
 ## Status
 
+This proposal is dead:  see https://github.com/ajvincent/proposal-await-dictionary/issues/8#issuecomment-889534004
+
 * Champion(s): Jordan Harband, Rick Waldron
 * Author(s): Alexander J. Vincent
 * Stage: 0
