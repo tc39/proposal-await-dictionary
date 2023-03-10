@@ -2,7 +2,7 @@
 
 ## Status
 
-* Champion(s): Ashley Claymore, TBC: Jordan Harband, Rick Waldron
+* Champion(s): Ashley Claymore, Jordan Harband, TBC: Rick Waldron
 * Author(s): Alexander J. Vincent
 * Stage: 0
 
