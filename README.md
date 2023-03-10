@@ -46,14 +46,14 @@ const mass = await massRequest;
 
 ## Potential solutions
 
-### Promise.allProperties
+### Promise.ownProperties
 
 ```javascript
 const {
   shape,
   color,
   mass,
-} = await Promise.allProperties({
+} = await Promise.ownProperties({
   shape: getShape(),
   color: getColor(),
   mass: getMass(),
@@ -67,10 +67,10 @@ const {
   shape,
   color,
   mass,
-} = Object.fromEntries(await Promise.fromEntries({
-  ["shape", getShape()],
-  ["color", getColor()],
-  ["mass", getMass()],
+} = await Promise.fromEntries(Object.entries({
+  shape: getShape(),
+  color: getColor(),
+  mass: getMass(),
 }));
 ```
 
