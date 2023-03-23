@@ -11,9 +11,10 @@ Champions:
 - Chris de Almeida ([@ctcpip](https://github.com/ctcpip))
 - TBC: Rick Waldron ([@rwaldron](https://github.com/rwaldron))
 
-Author:
+Authors:
 
 - Alexander J. Vincent ([@ajvincent](https://github.com/ajvincent))
+- Ashley Claymore ([@acutmore](https://github.com/acutmore))
 
 ## Motivation
 
