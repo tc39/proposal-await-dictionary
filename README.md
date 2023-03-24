@@ -88,6 +88,10 @@ const {
 
 http://bluebirdjs.com/docs/api/promise.props.html
 
+https://github.com/slorber/combine-promises
+
+https://github.com/sindresorhus/p-props
+
 ## Implementations
 
 ### Polyfill/transpiler implementations
