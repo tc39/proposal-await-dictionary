@@ -2,9 +2,19 @@
 
 ## Status
 
-* Champion(s): Ashley Claymore, Jordan Harband, TBC: Rick Waldron
-* Author(s): Alexander J. Vincent
-* Stage: 0
+Stage: 1
+
+Champions:
+
+- Ashley Claymore ([@acutmore](https://github.com/acutmore))
+- Jordan Harband ([@ljharb](https://github.com/ljharb))
+- Chris de Almeida ([@ctcpip](https://github.com/ctcpip))
+- TBC: Rick Waldron ([@rwaldron](https://github.com/rwaldron))
+
+Authors:
+
+- Alexander J. Vincent ([@ajvincent](https://github.com/ajvincent))
+- Ashley Claymore ([@acutmore](https://github.com/acutmore))
 
 ## Motivation
 
