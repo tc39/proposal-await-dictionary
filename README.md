@@ -104,10 +104,6 @@ None.
 
 ## Q&A
 
-**Q**: Why not WeakMaps, WeakSets or Sets?
-
-**A**: WeakMaps and WeakSets are by design not iterable.  Sets are iterable, but `Promise.all()` covers that case fairly well, we think.
-
 **Q**: Why not a deep-copy option?
 
 **A**: Deep copy traditionally has been left out of JavaScript for a number of reasons.  While a recursive promise walking API might be possible, combining it with this feels overcomplicated and unlikely to pass TC39's smell tests.
