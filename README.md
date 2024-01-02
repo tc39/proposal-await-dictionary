@@ -96,7 +96,7 @@ https://github.com/sindresorhus/p-props
 
 ### Polyfill/transpiler implementations
 
-None.
+- [proposal-await-dictionary/polyfill.js](./polyfill.js)
 
 ### Native implementations
 
