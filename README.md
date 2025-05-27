@@ -52,9 +52,7 @@ const obj_shape_color_mass = {
   mass: getMass(),
 };
 for (const key in obj_shape_color_mass) {
-  if (Object.prototype.hasOwnProperty.call(obj_shape_color_mass, key)) {
-    obj_shape_color_mass[key] = await obj_shape_color_mass[key];
-  }
+  obj_shape_color_mass[key] = await obj_shape_color_mass[key];
 }
 ```
 
