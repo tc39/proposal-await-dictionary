@@ -21,7 +21,7 @@ Authors:
 `await` on individual properties creates a waterfall, rather than running requests in parallel:
 
 ```javascript
-const obj = {
+const obj_shape_color_mass = {
   shape: await getShape(),
   color: await getColor(),
   mass: await getMass(),
@@ -31,27 +31,31 @@ const obj = {
 `Promise.all` helps, but is based on order, rather than names, which could lead to mixups:
 
 ```javascript
-const [
-  color,
-  shape,
-  mass,
-] = await Promise.all([
+const datas = await Promise.all([
   getShape(),
   getColor(),
   getMass(),
 ]);
+const obj_shape_color_mass = {
+  shape: datas[0],
+  color: datas[1],
+  mass: datas[2],
+}
 ```
 
-Solutions using existing syntax can be verbose and _pollute_ the number of variables in scope:
+Solutions using existing syntax can be verbose:
 
 ```javascript
-const shapeRequest = getShape();
-const colorRequest = getColor();
-const massRequest = getMass();
-
-const shape = await shapeRequest;
-const color = await colorRequest;
-const mass = await massRequest;
+const obj_shape_color_mass = {
+  shape: getShape(),
+  color: getColor(),
+  mass: getMass(),
+};
+for (const key in obj_shape_color_mass) {
+  if (Object.prototype.hasOwnProperty.call(obj_shape_color_mass, key)) {
+    obj_shape_color_mass[key] = await obj_shape_color_mass[key];
+  }
+}
 ```
 
 ## Potential solutions
@@ -59,11 +63,7 @@ const mass = await massRequest;
 ### Promise.ownProperties
 
 ```javascript
-const {
-  shape,
-  color,
-  mass,
-} = await Promise.ownProperties({
+const obj_shape_color_mass = await Promise.ownProperties({
   shape: getShape(),
   color: getColor(),
   mass: getMass(),
@@ -73,11 +73,7 @@ const {
 ### Promise.fromEntries
 
 ```javascript
-const {
-  shape,
-  color,
-  mass,
-} = await Promise.fromEntries(Object.entries({
+const obj_shape_color_mass = await Promise.fromEntries(Object.entries({
   shape: getShape(),
   color: getColor(),
   mass: getMass(),
