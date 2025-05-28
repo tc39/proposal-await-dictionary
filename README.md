@@ -35,10 +35,10 @@ const {
 `Promise.all` helps, but is based on order, rather than names, which could lead to mixups:
 
 ```javascript
+// The sequence and quantity correspond incorrectly
 const [
-  shape,
   color,
-  mass,
+  shape, 
 ] = await Promise.all([
   getShape(),
   getColor(),
