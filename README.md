@@ -177,6 +177,14 @@ const {
 });
 ```
 
+While this would avoid introduced a new name to the API surface there is discomfort with the shape of the output depending on the shape of the input and the risk of accidentally passing multiple arguments instead of an array - for example:
+
+```javascript
+Promise.all(p1, p2, p3); // ❌ should have been `Promise.all([p1, p2, p3])`
+```
+
+While this currently throws as the `p1` is not iterable, the overload would start to allow this call but not do what the caller intended.
+
 ### Dedicated syntax
 
 Inspired from other languages such as Swift - see: https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency#Calling-Asynchronous-Functions-in-Parallel
