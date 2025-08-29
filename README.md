@@ -177,7 +177,7 @@ const {
 });
 ```
 
-While this would avoid introduced a new name to the API surface there is discomfort with the shape of the output depending on the shape of the input and the risk of accidentally passing multiple arguments instead of an array - for example:
+"This _would_ avoid introducing a new name to the API surface. However, there is discomfort with the shape of the output depending on the shape of the input, and the risk of accidentally passing multiple arguments instead of an array. For example:
 
 ```javascript
 Promise.all(p1, p2, p3); // ❌ should have been `Promise.all([p1, p2, p3])`
