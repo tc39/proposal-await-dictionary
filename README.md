@@ -93,9 +93,9 @@ Iterator.zipKeyed = <D extends Dict<Iterator<any>>>(iterables: D)
 
 | Library                            | Own | Symbols |
 | -----------------------------------| --- | ------- |
-| [Bluebird.props](bluebird)         | ✅  |  ❌     |
-| [combine-promises](combine)        | ✅  |  ❌     |
-| [p-props](pprops)                  | ✅  |  ❌     |
+| [Bluebird.props][bluebird]         | ✅  |  ❌     |
+| [combine-promises][combine]        | ✅  |  ❌     |
+| [p-props][pprops]                  | ✅  |  ❌     |
 
 [bluebird]: http://bluebirdjs.com/docs/api/promise.props.html
 [combine]: https://github.com/slorber/combine-promises
