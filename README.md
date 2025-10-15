@@ -54,6 +54,8 @@ const color = await colorRequest;
 const mass = await massRequest;
 ```
 
+Additionally the above pattern risks unhandled Promise rejections. If `await shapeRequest` throws, then no handler was attached to the `colorRequest` or `massRequest` promises - if either of these reject it will result in an unhandled Promise rejection error. On some systems this will cause the process to exit.
+
 ## Proposed Solution
 
 ```javascript
@@ -87,6 +89,23 @@ Promise.allKeyed  = <D extends Dict<Promise<any>>>(promises: D)
 
 Iterator.zipKeyed = <D extends Dict<Iterator<any>>>(iterables: D)
   => Iterator<{ [k in keyof D]: Nexted<D[k]> }>
+```
+
+### Additional API
+
+This proposal also extends this feature to [`Promise.allSettled`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled) users.
+
+```javascript
+const results = await Promise.allSettledKeyed({
+    shape: getShape(),
+    color: getColor(),
+    mass: getMass(),
+});
+if (results.shape.status === "fulfilled") {
+  console.log(results.shape.value);
+} else {
+  console.error(results.shape.reason)
+}
 ```
 
 ## Existing solutions
