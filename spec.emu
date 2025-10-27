@@ -101,7 +101,7 @@ contributors: Alexander J. Vincent, Ashley Claymore, Chris de Almeida, Jordan Ha
                 1. Set _index_ to _index_ + 1.
             1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
             1. If _remainingElementsCount_.[[Value]] = 0, then
-              1. NOTE: There may be non-zero results if a ill-behaved thenable synchronously invoked its then callback.
+              1. NOTE: This can happen even if _keys_ was non-empty if an ill-behaved thenable synchronously invoked the callback passed to its *"then"* method.
               1. Let _result_ be CreateKeyedPromiseCombinatorResultObject(_keys_, _values_).
               1. Perform ? Call(_resultCapability_.[[Resolve]], *undefined*, « _result_ »).
             1. Return _resultCapability_.[[Promise]].
@@ -201,7 +201,7 @@ contributors: Alexander J. Vincent, Ashley Claymore, Chris de Almeida, Jordan Ha
                 1. Set _index_ to _index_ + 1.
             1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
             1. If _remainingElementsCount_.[[Value]] = 0, then
-              1. NOTE: There may be non-zero results if a ill-behaved thenable synchronously invoked its then callback.
+              1. NOTE: This can happen even if _keys_ was non-empty if an ill-behaved thenable synchronously invoked the callback passed to its *"then"* method.
               1. Let _result_ be CreateKeyedPromiseCombinatorResultObject(_keys_, _values_).
               1. Perform ? Call(_resultCapability_.[[Resolve]], *undefined*, « _result_ »).
             1. Return _resultCapability_.[[Promise]].
