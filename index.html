@@ -872,7 +872,7 @@ let referencePane = {
     this.$pane.appendChild(this.$tableContainer);
 
     if (menu != null) {
-      menu.$specContainer.after(this.$container);
+      menu.$specContainer.appendChild(this.$container);
     }
   },
 
@@ -1204,9 +1204,6 @@ function doShortcut(e) {
     document.documentElement.classList.toggle('show-ao-annotations');
   } else if (e.key === '?') {
     document.getElementById('shortcuts-help').classList.toggle('active');
-  } else if (e.key === ';') {
-    let el = document.getElementById('bd75b99add5f');
-    if (el != null) el.remove();
   }
 }
 
@@ -2254,7 +2251,7 @@ emu-oneof {
 }
 
 emu-nt {
-  display: inline-block;
+  display: inline;
   font-style: italic;
   white-space: nowrap;
   text-indent: 0;
@@ -2594,7 +2591,7 @@ table.real-table th {
 }
 
 emu-table td {
-  background: transparent;
+  background: var(--background-color);
 }
 
 td[colspan]:not([colspan="1"]), th[colspan]:not([colspan="1"]) {
@@ -2701,7 +2698,7 @@ tr.del > td {
   height: 100vh;
   max-width: 500px;
   box-sizing: border-box;
-  background: var(--control-background-color);
+  background-color: var(--control-background-color);
   overflow: hidden;
   transition: opacity 0.1s linear;
   padding: 0 5px;
@@ -3142,7 +3139,7 @@ li.menu-search-result-term::before {
 
 .toolbox::after {
   border-color: var(--toolbox-tail-background-outside-color);
-  border-top-color: var(--control-border-color);
+  border-top-color: var(--control-background-color);
   border-width: 10px;
   margin-left: -10px;
 }
@@ -3159,7 +3156,7 @@ li.menu-search-result-term::before {
   left: 0;
   right: 0;
   display: none;
-  background: var(--control-background-color);
+  background-color: var(--control-background-color);
   z-index: 1;
 }
 
@@ -3200,17 +3197,6 @@ li.menu-search-result-term::before {
   padding-right: 5px;
 }
 
-emu-normative-optional {
-  display: block;
-}
-
-emu-normative-optional::before {
-  display: block;
-  color: var(--attributes-tag-foreground-color);
-  content: "NORMATIVE OPTIONAL";
-}
-
-emu-normative-optional,
 [normative-optional],
 [deprecated],
 [legacy] {
@@ -3243,7 +3229,7 @@ emu-normative-optional,
   outline: solid 10000px var(--control-dialog-fade-color);
   border-radius: 5px;
   border-width: 1px 1px 0 1px;
-  background: var(--control-background-color);
+  background-color: var(--control-background-color);
   display: none;
 }
 
@@ -3547,18 +3533,6 @@ figcaption:has(+ emu-table) {
 emu-alg ol li:last-child {
   break-before: avoid;
   break-after: initial; /* it's okay to break after the last item in a list, even if it's also the first item in the list */
-}
-
-emu-normative-optional {
-  break-inside: avoid;
-}
-
-emu-normative-optional emu-clause[id] {
-  margin-top: 0;
-}
-
-emu-normative-optional emu-alg > ol {
-  margin-bottom: 0;
 }
 
 emu-note {
@@ -3992,7 +3966,7 @@ p.ECMAaddress {
 </ul></div><div id="menu-toggle"><svg xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%; stroke:currentColor" viewBox="0 0 120 120" width="54" height="54">
       <title>Menu</title>
       <path stroke-width="10" stroke-linecap="round" d="M30,60 h60  M30,30 m0,5 h60  M30,90 m0,-5 h60"></path>
-    </svg></div><div id="menu-spacer" class="menu-spacer"></div><div id="menu"><div id="menu-search"><input type="text" id="menu-search-box" placeholder="Search..."><div id="menu-search-results" class="inactive"></div></div><div id="menu-pins"><div class="menu-pane-header">Pins<button class="unpin-all">clear</button></div><ul id="menu-pins-list"></ul></div><div class="menu-pane-header">Table of Contents</div><div id="menu-toc"><ol class="toc"><li><span class="item-toggle">+</span><a href="#sec-promise.allkeyed" title="Promise.allKeyed ( promises )"><span class="secnum">1</span> Promise.allKeyed ( <var>promises</var> )</a><ol class="toc"><li><span class="item-toggle-none"></span><a href="#sec-performpromiseallkeyed" title="PerformPromiseAllKeyed ( promises, constructor, resultCapability, promiseResolve )"><span class="secnum">1.1</span> PerformPromiseAllKeyed ( <var>promises</var>, <var>constructor</var>, <var>resultCapability</var>, <var>promiseResolve</var> )</a></li><li><span class="item-toggle-none"></span><a href="#sec-promise.allkeyed-resolve-element-functions" title="Promise.allKeyed Resolve Element Functions"><span class="secnum">1.2</span> <code>Promise.allKeyed</code> Resolve Element Functions</a></li></ol></li><li><span class="item-toggle-none"></span><a href="#sec-copyright-and-software-license" title="Copyright &amp; Software License">Copyright &amp; Software License</a></li></ol></div></div><div id="spec-container"><h1 class="version">Stage 1 Draft / September 9, 2025</h1><h1 class="title">Await Dictionary</h1>
+    </svg></div><div id="menu-spacer" class="menu-spacer"></div><div id="menu"><div id="menu-search"><input type="text" id="menu-search-box" placeholder="Search..."><div id="menu-search-results" class="inactive"></div></div><div id="menu-pins"><div class="menu-pane-header">Pins<button class="unpin-all">clear</button></div><ul id="menu-pins-list"></ul></div><div class="menu-pane-header">Table of Contents</div><div id="menu-toc"><ol class="toc"><li><span class="item-toggle">+</span><a href="#sec-promise.allkeyed" title="Promise.allKeyed ( promises )"><span class="secnum">1</span> Promise.allKeyed ( <var>promises</var> )</a><ol class="toc"><li><span class="item-toggle-none"></span><a href="#sec-performpromiseallkeyed" title="PerformPromiseAllKeyed ( promises, constructor, resultCapability, promiseResolve )"><span class="secnum">1.1</span> PerformPromiseAllKeyed ( <var>promises</var>, <var>constructor</var>, <var>resultCapability</var>, <var>promiseResolve</var> )</a></li><li><span class="item-toggle-none"></span><a href="#sec-promise.allkeyed-resolve-element-functions" title="Promise.allKeyed Resolve Element Functions"><span class="secnum">1.2</span> <code>Promise.allKeyed</code> Resolve Element Functions</a></li></ol></li><li><span class="item-toggle-none"></span><a href="#sec-copyright-and-software-license" title="Copyright &amp; Software License">Copyright &amp; Software License</a></li></ol></div></div><div id="spec-container"><h1 class="version">Stage 1 Draft / October 27, 2025</h1><h1 class="title">Await Dictionary</h1>
 
 <emu-clause id="sec-promise.allkeyed">
   <h1><span class="secnum">1</span> Promise.allKeyed ( <var>promises</var> )</h1>
