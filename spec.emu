@@ -21,10 +21,10 @@ contributors: Alexander J. Vincent, Ashley Claymore, Chris de Almeida, Jordan Ha
             <li>has the following properties:</li>
           </ul>
 
-      <emu-clause id="sec-createpromiseallresult" type="abstract operation">
+      <emu-clause id="sec-createkeyedpromisecombinatorresultobject" type="abstract operation">
         <h1>
           <ins>
-            CreatePromiseAllResult (
+            CreateKeyedPromiseCombinatorResultObject (
               _keys_: a List of property keys,
               _values_: a List of ECMAScript language values,
             ): an Object
@@ -101,7 +101,7 @@ contributors: Alexander J. Vincent, Ashley Claymore, Chris de Almeida, Jordan Ha
                 1. Set _index_ to _index_ + 1.
             1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
             1. If _remainingElementsCount_.[[Value]] = 0, then
-              1. Let _result_ be CreatePromiseAllResult(_keys_, _values_).
+              1. Let _result_ be CreateKeyedPromiseCombinatorResultObject(_keys_, _values_).
               1. Perform ? Call(_resultCapability_.[[Resolve]], *undefined*, « _result_ »).
             1. Return _resultCapability_.[[Promise]].
           </emu-alg>
@@ -123,7 +123,7 @@ contributors: Alexander J. Vincent, Ashley Claymore, Chris de Almeida, Jordan Ha
             1. Set _values_[_index_] to _x_.
             1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
             1. If _remainingElementsCount_.[[Value]] = 0, then
-              1. Let _result_ be CreatePromiseAllResult(_keys_, _values_).
+              1. Let _result_ be CreateKeyedPromiseCombinatorResultObject(_keys_, _values_).
               1. Return ? Call(_promiseCapability_.[[Resolve]], *undefined*, « _result_ »).
             1. Return *undefined*.
           </emu-alg>
@@ -200,7 +200,7 @@ contributors: Alexander J. Vincent, Ashley Claymore, Chris de Almeida, Jordan Ha
                 1. Set _index_ to _index_ + 1.
             1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
             1. If _remainingElementsCount_.[[Value]] = 0, then
-              1. Let _result_ be CreatePromiseAllResult(_keys_, _values_).
+              1. Let _result_ be CreateKeyedPromiseCombinatorResultObject(_keys_, _values_).
               1. Perform ? Call(_resultCapability_.[[Resolve]], *undefined*, « _result_ »).
             1. Return _resultCapability_.[[Promise]].
           </emu-alg>
@@ -226,7 +226,7 @@ contributors: Alexander J. Vincent, Ashley Claymore, Chris de Almeida, Jordan Ha
             1. Set _values_[_index_] to _obj_.
             1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
             1. If _remainingElementsCount_.[[Value]] = 0, then
-              1. Let _result_ be CreatePromiseAllResult(_keys_, _values_).
+              1. Let _result_ be CreateKeyedPromiseCombinatorResultObject(_keys_, _values_).
               1. Return ? Call(_promiseCapability_.[[Resolve]], *undefined*, « _result_ »).
             1. Return *undefined*.
           </emu-alg>
@@ -253,7 +253,7 @@ contributors: Alexander J. Vincent, Ashley Claymore, Chris de Almeida, Jordan Ha
             1. Set _values_[_index_] to _obj_.
             1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
             1. If _remainingElementsCount_.[[Value]] = 0, then
-              1. Let _result_ be CreatePromiseAllResult(_keys_, _values_).
+              1. Let _result_ be CreateKeyedPromiseCombinatorResultObject(_keys_, _values_).
               1. Return ? Call(_promiseCapability_.[[Resolve]], *undefined*, « _result_ »).
             1. Return *undefined*.
           </emu-alg>
