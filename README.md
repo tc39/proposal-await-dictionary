@@ -72,11 +72,11 @@ const {
 
 This [intentionally](https://github.com/tc39/proposal-joint-iteration/issues/27#issue-2367717102) follows the shape of https://github.com/tc39/proposal-joint-iteration.
 
-As `Iterator.zip` is to `Promise.all`
+As `Promise.all` is to `Iterator.zip`
 
 ```typescript
-Promise.all  = (Array<Promise<T>>)  => Promise<Array<T>>
 Iterator.zip = (Array<Iterator<T>>) => Iterator<Array<T>>
+Promise.all  = (Array<Promise<T>>)  => Promise<Array<T>>
 ```
 
 `Promise.allKeyed` is to `Iterator.zipKeyed`
@@ -84,11 +84,11 @@ Iterator.zip = (Array<Iterator<T>>) => Iterator<Array<T>>
 ```typescript
 type Dict<V> = { [k: string | symbol]: V };
 
-Promise.allKeyed  = <D extends Dict<Promise<any>>>(promises: D)
-  => Promise <{ [k in keyof D]: Awaited<D[k]> }>
-
 Iterator.zipKeyed = <D extends Dict<Iterator<any>>>(iterables: D)
   => Iterator<{ [k in keyof D]: Nexted<D[k]> }>
+
+Promise.allKeyed  = <D extends Dict<Promise<any>>>(promises: D)
+  => Promise <{ [k in keyof D]: Awaited<D[k]> }>
 ```
 
 ### Additional API
