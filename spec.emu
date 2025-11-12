@@ -11,17 +11,11 @@ contributors: Alexander J. Vincent, Ashley Claymore, Chris de Almeida, Jordan Ha
 <emu-clause id="sec-control-abstraction-objects" number="27">
   <h1>Control Abstraction Objects</h1>
   <emu-clause id="sec-promise-objects" number="2">
-      <h1>Promise Objects</h1>
+    <h1>Promise Objects</h1>
+    <emu-clause id="sec-promise-abstract-operations" number="1">
+      <h1>Promise Abstract Operations</h1>
 
-    <emu-clause id="sec-properties-of-the-promise-constructor" number="4">
-          <h1>Properties of the Promise Constructor</h1>
-          <p>The Promise constructor:</p>
-          <ul>
-            <li>has a [[Prototype]] internal slot whose value is %Function.prototype%.</li>
-            <li>has the following properties:</li>
-          </ul>
-
-      <emu-clause id="sec-createkeyedpromisecombinatorresultobject" type="abstract operation">
+      <emu-clause id="sec-createkeyedpromisecombinatorresultobject" type="abstract operation" number="10">
         <h1>
           <ins>
             CreateKeyedPromiseCombinatorResultObject (
@@ -40,6 +34,15 @@ contributors: Alexander J. Vincent, Ashley Claymore, Chris de Almeida, Jordan Ha
           1. Return _obj_.
         </emu-alg>
       </emu-clause>
+    </emu-clause>
+
+    <emu-clause id="sec-properties-of-the-promise-constructor" number="4">
+      <h1>Properties of the Promise Constructor</h1>
+      <p>The Promise constructor:</p>
+      <ul>
+        <li>has a [[Prototype]] internal slot whose value is %Function.prototype%.</li>
+        <li>has the following properties:</li>
+      </ul>
 
       <emu-clause id="sec-promise.allkeyed">
         <h1><ins>Promise.allKeyed ( _promises_ )</ins></h1>
