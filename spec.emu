@@ -73,7 +73,7 @@ contributors: Alexander J. Vincent, Ashley Claymore, Chris de Almeida, Jordan Ha
                 _ctor_: a constructor,
                 _resultCapability_: a PromiseCapability Record,
                 _promiseResolve_: a function object,
-              ): either a normal completion containing an ECMAScript language value or a throw completion
+              ): either a normal completion containing an Object or a throw completion
             </ins>
           </h1>
           <dl class="header">
