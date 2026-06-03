@@ -48,15 +48,15 @@ contributors: Alexander J. Vincent, Ashley Claymore, Chris de Almeida, Jordan Ha
         <h1><ins>Promise.allKeyed ( _promises_ )</ins></h1>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _C_ be the *this* value.
-          1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
-          1. Let _promiseResolve_ be Completion(GetPromiseResolve(_C_)).
+          1. Let _ctor_ be the *this* value.
+          1. Let _promiseCapability_ be ? NewPromiseCapability(_ctor_).
+          1. Let _promiseResolve_ be Completion(GetPromiseResolve(_ctor_)).
           1. IfAbruptRejectPromise(_promiseResolve_, _promiseCapability_).
           1. If _promises_ is not an Object, then
             1. Let _error_ be a newly created *TypeError* object.
             1. Perform ? Call(_promiseCapability_.[[Reject]], *undefined*, « _error_ »).
             1. Return _promiseCapability_.[[Promise]].
-          1. Let _result_ be Completion(PerformPromiseAllKeyed(~all~, _promises_, _C_, _promiseCapability_, _promiseResolve_)).
+          1. Let _result_ be Completion(PerformPromiseAllKeyed(~all~, _promises_, _ctor_, _promiseCapability_, _promiseResolve_)).
           1. IfAbruptRejectPromise(_result_, _promiseCapability_).
           1. Return _promiseCapability_.[[Promise]].
         </emu-alg>
@@ -70,10 +70,10 @@ contributors: Alexander J. Vincent, Ashley Claymore, Chris de Almeida, Jordan Ha
               PerformPromiseAllKeyed (
                 _variant_: ~all~ or ~all-settled~,
                 _promises_: an Object,
-                _constructor_: a constructor,
+                _ctor_: a constructor,
                 _resultCapability_: a PromiseCapability Record,
                 _promiseResolve_: a function object,
-              ): either a normal completion containing an ECMAScript language value or a throw completion
+              ): either a normal completion containing an Object or a throw completion
             </ins>
           </h1>
           <dl class="header">
@@ -85,53 +85,53 @@ contributors: Alexander J. Vincent, Ashley Claymore, Chris de Almeida, Jordan Ha
             1. Let _remainingElementsCount_ be the Record { [[Value]]: 1 }.
             1. Let _index_ be 0.
             1. For each element _key_ of _allKeys_, do
-              1. Let _desc_ be ? _promises_.[[GetOwnProperty]](_key_).
-              1. If _desc_ is not *undefined* and _desc_.[[Enumerable]] is *true*, then
-                1. Let _value_ be ? Get(_promises_, _key_).
+              1. Let _propertyDesc_ be ? _promises_.[[GetOwnProperty]](_key_).
+              1. If _propertyDesc_ is not *undefined* and _propertyDesc_.[[Enumerable]] is *true*, then
+                1. Let _propertyValue_ be ? Get(_promises_, _key_).
                 1. Append _key_ to _keys_.
                 1. Append *undefined* to _values_.
-                1. Let _nextPromise_ be ? Call(_promiseResolve_, _constructor_, « _value_ »).
+                1. Let _nextPromise_ be ? Call(_promiseResolve_, _ctor_, « _propertyValue_ »).
                 1. Let _alreadyCalled_ be the Record { [[Value]]: *false* }.
-                1. Let _onFulfilledSteps_ be a new Abstract Closure with parameters (_x_) that captures _variant_, _keys_, _values_, _resultCapability_, and _remainingElementsCount_ and performs the following steps when called:
-                  1. Let _F_ be the active function object.
-                  1. If _F_.[[AlreadyCalled]].[[Value]] is *true*, return *undefined*.
-                  1. Set _F_.[[AlreadyCalled]].[[Value]] to *true*.
-                  1. Let _thisIndex_ be _F_.[[Index]].
+                1. Let _fulfilledSteps_ be a new Abstract Closure with parameters (_value_) that captures _variant_, _keys_, _values_, _resultCapability_, and _remainingElementsCount_ and performs the following steps when called:
+                  1. Let _activeFunc_ be the active function object.
+                  1. If _activeFunc_.[[AlreadyCalled]].[[Value]] is *true*, return *undefined*.
+                  1. Set _activeFunc_.[[AlreadyCalled]].[[Value]] to *true*.
+                  1. Let _thisIndex_ be _activeFunc_.[[Index]].
                   1. If _variant_ is ~all~, then
-                    1. Set _values_[_thisIndex_] to _x_.
+                    1. Set _values_[_thisIndex_] to _value_.
                   1. Else,
                     1. Assert: _variant_ is ~all-settled~.
                     1. Let _obj_ be OrdinaryObjectCreate(%Object.prototype%).
                     1. Perform ! CreateDataPropertyOrThrow(_obj_, *"status"*, *"fulfilled"*).
-                    1. Perform ! CreateDataPropertyOrThrow(_obj_, *"value"*, _x_).
+                    1. Perform ! CreateDataPropertyOrThrow(_obj_, *"value"*, _value_).
                     1. Set _values_[_thisIndex_] to _obj_.
                   1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
                   1. If _remainingElementsCount_.[[Value]] = 0, then
                     1. Let _result_ be CreateKeyedPromiseCombinatorResultObject(_keys_, _values_).
                     1. Return ? Call(_resultCapability_.[[Resolve]], *undefined*, « _result_ »).
                   1. Return *undefined*.
-                1. Let _onFulfilled_ be CreateBuiltinFunction(_onFulfilledSteps_, 1, *""*, « [[AlreadyCalled]], [[Index]] »).
+                1. Let _onFulfilled_ be CreateBuiltinFunction(_fulfilledSteps_, 1, *""*, « [[AlreadyCalled]], [[Index]] »).
                 1. Set _onFulfilled_.[[AlreadyCalled]] to _alreadyCalled_.
                 1. Set _onFulfilled_.[[Index]] to _index_.
                 1. If _variant_ is ~all~, then
                   1. Let _onRejected_ be _resultCapability_.[[Reject]].
                 1. Else,
                   1. Assert: _variant_ is ~all-settled~.
-                  1. Let _onRejectedSteps_ be a new Abstract Closure with parameters (_x_) that captures _keys_, _values_, _resultCapability_, and _remainingElementsCount_ and performs the following steps when called:
-                    1. Let _F_ be the active function object.
-                    1. If _F_.[[AlreadyCalled]].[[Value]] is *true*, return *undefined*.
-                    1. Set _F_.[[AlreadyCalled]].[[Value]] to *true*.
-                    1. Let _thisIndex_ be _F_.[[Index]].
+                  1. Let _rejectedSteps_ be a new Abstract Closure with parameters (_error_) that captures _keys_, _values_, _resultCapability_, and _remainingElementsCount_ and performs the following steps when called:
+                    1. Let _activeFunc_ be the active function object.
+                    1. If _activeFunc_.[[AlreadyCalled]].[[Value]] is *true*, return *undefined*.
+                    1. Set _activeFunc_.[[AlreadyCalled]].[[Value]] to *true*.
+                    1. Let _thisIndex_ be _activeFunc_.[[Index]].
                     1. Let _obj_ be OrdinaryObjectCreate(%Object.prototype%).
                     1. Perform ! CreateDataPropertyOrThrow(_obj_, *"status"*, *"rejected"*).
-                    1. Perform ! CreateDataPropertyOrThrow(_obj_, *"reason"*, _x_).
+                    1. Perform ! CreateDataPropertyOrThrow(_obj_, *"reason"*, _error_).
                     1. Set _values_[_thisIndex_] to _obj_.
                     1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] - 1.
                     1. If _remainingElementsCount_.[[Value]] = 0, then
                       1. Let _result_ be CreateKeyedPromiseCombinatorResultObject(_keys_, _values_).
                       1. Return ? Call(_resultCapability_.[[Resolve]], *undefined*, « _result_ »).
                     1. Return *undefined*.
-                  1. Let _onRejected_ be CreateBuiltinFunction(_onRejectedSteps_, 1, *""*, « [[AlreadyCalled]], [[Index]] »).
+                  1. Let _onRejected_ be CreateBuiltinFunction(_rejectedSteps_, 1, *""*, « [[AlreadyCalled]], [[Index]] »).
                   1. Set _onRejected_.[[AlreadyCalled]] to _alreadyCalled_.
                   1. Set _onRejected_.[[Index]] to _index_.
                 1. Set _remainingElementsCount_.[[Value]] to _remainingElementsCount_.[[Value]] + 1.
@@ -151,15 +151,15 @@ contributors: Alexander J. Vincent, Ashley Claymore, Chris de Almeida, Jordan Ha
         <h1><ins>Promise.allSettledKeyed ( _promises_ )</ins></h1>
         <p>This method performs the following steps when called:</p>
         <emu-alg>
-          1. Let _C_ be the *this* value.
-          1. Let _promiseCapability_ be ? NewPromiseCapability(_C_).
-          1. Let _promiseResolve_ be Completion(GetPromiseResolve(_C_)).
+          1. Let _ctor_ be the *this* value.
+          1. Let _promiseCapability_ be ? NewPromiseCapability(_ctor_).
+          1. Let _promiseResolve_ be Completion(GetPromiseResolve(_ctor_)).
           1. IfAbruptRejectPromise(_promiseResolve_, _promiseCapability_).
           1. If _promises_ is not an Object, then
             1. Let _error_ be a newly created *TypeError* object.
             1. Perform ? Call(_promiseCapability_.[[Reject]], *undefined*, « _error_ »).
             1. Return _promiseCapability_.[[Promise]].
-          1. Let _result_ be Completion(PerformPromiseAllKeyed(~all-settled~, _promises_, _C_, _promiseCapability_, _promiseResolve_)).
+          1. Let _result_ be Completion(PerformPromiseAllKeyed(~all-settled~, _promises_, _ctor_, _promiseCapability_, _promiseResolve_)).
           1. IfAbruptRejectPromise(_result_, _promiseCapability_).
           1. Return _promiseCapability_.[[Promise]].
         </emu-alg>
