@@ -14,10 +14,10 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@tc39/ecma262-biblio": "^2.1.2928",
-    "ecmarkup": "^21.3.1",
-    "jsdom": "^26.1.0",
-    "parse5-html-rewriting-stream": "^7.1.0",
-    "tmp": "^0.2.3"
+    "@tc39/ecma262-biblio": "^2.2.3108",
+    "ecmarkup": "^24.1.0",
+    "jsdom": "^29.1.1",
+    "parse5-html-rewriting-stream": "^8.0.1",
+    "tmp": "^0.2.7"
   }
 }
