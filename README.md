@@ -2,7 +2,7 @@
 
 ## Status
 
-Stage: 2.7
+Stage: 3
 
 Champions:
 
