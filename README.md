@@ -124,7 +124,8 @@ if (results.shape.status === "fulfilled") {
 
 ### Polyfill/transpiler implementations
 
-None.
+- [core-js](https://github.com/zloirock/core-js#await-dictionary): polyfills for `Promise.allKeyed` and `Promise.allSettledKeyed`.
+- es-shims: polyfills for [`Promise.allKeyed`](https://github.com/es-shims/Promise.allKeyed) and [`Promise.allSettledKeyed`](https://github.com/es-shims/Promise.allSettledKeyed).
 
 ### Native implementations
 
